@@ -1,132 +1,106 @@
 import 'package:flutter/material.dart';
-import 'package:select2dot1/select2dot1.dart';
+import 'api/api_service.dart';
+import 'champion.dart';
 
 void main() {
-  runApp(const SimpleExampleApp());
+  runApp(MyApp());
 }
 
-// Below you can see the code for the simple example app, but it is not included in the example available on https://select2dot1.site
-
-class SimpleExampleApp extends StatefulWidget {
-  const SimpleExampleApp({super.key});
-
-  @override
-  State<SimpleExampleApp> createState() => _SimpleExampleAppState();
-}
-
-class _SimpleExampleAppState extends State<SimpleExampleApp> {
-  ScrollController scrollController = ScrollController();
-
-  static const List<SingleCategoryModel> exampleData = [
-    SingleCategoryModel(
-      nameCategory: 'Central Time Zone',
-      singleItemCategoryList: [
-        SingleItemCategoryModel(
-          nameSingleItem: 'Alabama',
-          extraInfoSingleItem: '1395 Lincoln Street',
-          avatarSingleItem: CircleAvatar(
-            backgroundColor: Colors.orange,
-            child: Text('AL', style: TextStyle(color: Colors.white)),
-          ),
-        ),
-        SingleItemCategoryModel(nameSingleItem: 'Arkansas'),
-        SingleItemCategoryModel(nameSingleItem: 'Illonois'),
-      ],
-    ),
-    SingleCategoryModel(
-      nameCategory: 'Pacific Time Zone',
-      singleItemCategoryList: [
-        SingleItemCategoryModel(nameSingleItem: 'California'),
-        SingleItemCategoryModel(nameSingleItem: 'Nevada'),
-        SingleItemCategoryModel(nameSingleItem: 'Oregon'),
-      ],
-    ),
-  ];
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Basic Example'),
-          titleTextStyle: const TextStyle(
-            color: Color(0xff001029),
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-          ),
-          foregroundColor: const Color(0xff001029),
-          backgroundColor: Colors.white,
-          shadowColor: Colors.transparent,
+      title: 'League of Legends Champions',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: ChampionListScreen(),
+    );
+  }
+}
+
+class ChampionListScreen extends StatefulWidget {
+  @override
+  _ChampionListScreenState createState() => _ChampionListScreenState();
+}
+
+class _ChampionListScreenState extends State<ChampionListScreen> {
+  late Future<List<Champion>> futureChampions;
+  Champion? selectedChampion;
+
+  @override
+  void initState() {
+    super.initState();
+    futureChampions = ApiService().fetchChampions();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Select a Champion'),
+      ),
+      body: Center(
+        child: FutureBuilder<List<Champion>>(
+          future: futureChampions,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text("Error: ${snapshot.error}");
+            }
+            var champions = snapshot.data ?? [];
+            return DropdownButton<Champion>(
+              hint: Text("Select a champion"),
+              value: selectedChampion,
+              onChanged: (Champion? newValue) {
+                setState(() {
+                  selectedChampion = newValue;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChampionDetailScreen(champion: newValue!)),
+                );
+              },
+              items: champions.map<DropdownMenuItem<Champion>>((Champion champion) {
+                return DropdownMenuItem<Champion>(
+                  value: champion,
+                  child: Text(champion.champname),
+                );
+              }).toList(),
+            );
+          },
         ),
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          controller: scrollController,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: 300,
-                  child: Select2dot1(
-                    selectDataController: SelectDataController(
-                      data: exampleData,
-                    ),
-                    scrollController: scrollController,
-                  ),
-                ),
-                const SizedBox(height: 250),
-                Select2dot1(
-                  selectDataController: SelectDataController(
-                    data: exampleData,
-                    initSelected: const [
-                      SingleItemCategoryModel(
-                        nameSingleItem: 'Oregon',
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 250),
-                Select2dot1(
-                  selectDataController: SelectDataController(
-                    data: exampleData,
-                    isMultiSelect: false,
-                    initSelected: const [
-                      SingleItemCategoryModel(nameSingleItem: 'Arkansas'),
-                    ],
-                  ),
-                  scrollController: scrollController,
-                ),
-                const SizedBox(height: 250),
-                Select2dot1(
-                  selectDataController: SelectDataController(
-                    data: exampleData,
-                    initSelected: const [
-                      SingleItemCategoryModel(nameSingleItem: 'Illonois'),
-                      SingleItemCategoryModel(nameSingleItem: 'California'),
-                      SingleItemCategoryModel(nameSingleItem: 'Alabama'),
-                    ],
-                  ),
-                  pillboxContentMultiSettings:
-                      const PillboxContentMultiSettings(pillboxOverload: 5),
-                  selectSingleSettings:
-                      const SelectSingleSettings(showExtraInfo: false),
-                  categoryItemModalSettings: const CategoryItemModalSettings(
-                    showExtraInfo: false,
-                  ),
-                  categoryItemOverlaySettings:
-                      const CategoryItemOverlaySettings(
-                    showExtraInfo: false,
-                  ),
-                  scrollController: scrollController,
-                  pillboxTitleSettings:
-                      const PillboxTitleSettings(title: 'Example 7'),
-                  titleModalSettings:
-                      const TitleModalSettings(title: 'Example 7'),
-                ),
-                const SizedBox(height: 250),
-              ],
-            ),
-          ),
+      ),
+    );
+  }
+}
+
+class ChampionDetailScreen extends StatelessWidget {
+  final Champion champion;
+
+  ChampionDetailScreen({required this.champion});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(champion.champname),
+      ),
+      body: SingleChildScrollView( // Utilisez SingleChildScrollView pour éviter les débordements
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text("Name: ${champion.champname}", style: TextStyle(fontSize: 42)),
+            SizedBox(height: 20), // Ajout d'un espace entre les éléments
+            Image.network(champion.champicon), // Affiche l'icône du champion
+            SizedBox(height: 20), // Ajout d'un espace entre les éléments
+            Text("Description: ${champion.champdescription}", style: TextStyle(fontSize: 16)),
+            SizedBox(height: 20), // Ajout d'un espace entre les éléments
+
+          ],
         ),
       ),
     );
