@@ -35,7 +35,7 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
           children: <Widget>[
             Text("Name: ${widget.champion.name}", style: TextStyle(fontSize: 24)),
             SizedBox(height: 10),
-            Image.asset('assets/${widget.champion.iconPath}'),
+            Image.asset('assets/${widget.champion.iconPath}', width: 700, height: 250, fit: BoxFit.fill,),
             SizedBox(height: 10),
             Text("Description: ${widget.champion.description}", style: TextStyle(fontSize: 16)),
             SizedBox(height: 20),

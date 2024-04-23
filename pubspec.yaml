@@ -58,6 +58,8 @@ flutter:
   assets:
     - assets/images/champions/
     - assets/images/spells/
+    - assets/images/roles/
+    - assets/images/types/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
