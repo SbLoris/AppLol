@@ -1,3 +1,5 @@
+import 'spell.dart';  // Importe la définition de la classe Spell
+
 class Champion {
   final int id;
   final String name;
@@ -14,44 +16,20 @@ class Champion {
   });
 
   factory Champion.fromJson(Map<String, dynamic> json) {
-    var spellsList = json['spells'] as List;
-    List<Spell> spells = spellsList.map((i) => Spell.fromJson(i)).toList();
+    int id = int.parse(json['id'] as String);
+
+    var spellsList = json['spells'] != null ? json['spells'] as List : [];
+    List<Spell> spells = spellsList.isNotEmpty
+        ? spellsList.map((i) => Spell.fromJson(i as Map<String, dynamic>)).toList()
+        : [];
 
     return Champion(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
-      iconPath: json['path_icon'],
+      id: id,
+      name: json['name'] as String,
+      description: json['description'] as String,
+      iconPath: json['path_icon'] as String,
       spells: spells,
     );
   }
-}
 
-class Spell {
-  final int id;
-  final String name;
-  final String description;
-  final String touch;
-  final String iconPath;
-  final int championsId;
-
-  Spell({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.touch,
-    required this.iconPath,
-    required this.championsId,
-  });
-
-  factory Spell.fromJson(Map<String, dynamic> json) {
-    return Spell(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
-      touch: json['touch'],
-      iconPath: json['path_icon'],
-      championsId: json['champions_id']
-    );
-  }
 }

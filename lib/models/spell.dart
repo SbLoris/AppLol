@@ -1,8 +1,7 @@
-// Define the Spell model class
-
 class Spell {
   final int id;
-  final String name;
+  final String name;    // Convertir `id` en int en vérifiant d'abord si c'est une chaîne
+
   final String description;
   final String touch;
   final String iconPath;
@@ -17,7 +16,7 @@ class Spell {
     required this.championsId,
   });
 
-  // Factory constructor to create a Spell from JSON data
+  // Spell model
   factory Spell.fromJson(Map<String, dynamic> json) {
     return Spell(
       id: json['id'] as int,
@@ -28,4 +27,5 @@ class Spell {
       championsId: json['champions_id'] as int,
     );
   }
+
 }
