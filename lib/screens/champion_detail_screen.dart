@@ -18,8 +18,8 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
   @override
   void initState() {
     super.initState();
-    futureSpells = ApiService().fetchChampionDetails(widget.champion.name)
-        .then((champion) => champion.spells ?? []); // Retrieve the spells for the champion
+    futureSpells = ApiService().fetchChampionDetails(widget.champion.name, widget.champion)
+        .then((champion) => champion.spells ?? []);
   }
 
   @override
@@ -60,6 +60,8 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
           return Column(
             children: spells != null && spells.isNotEmpty
                 ? spells.map((spell) => ListTile(
+              leading: Image.asset('assets/${spell.iconPath}'),
+
               title: Text(spell.name),
               subtitle: Text(spell.description),
             )).toList()
@@ -69,4 +71,5 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
       },
     );
   }
+
 }

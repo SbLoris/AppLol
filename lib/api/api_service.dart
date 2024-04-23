@@ -4,23 +4,24 @@ import '../models/champion.dart';
 import '../models/spell.dart';
 
 class ApiService {
-  // Fetch details for a single champion
-  Future<Champion> fetchChampionDetails(String name) async {
+  Future<Champion> fetchChampionDetails(String name, Champion champion) async {
     final response = await http.get(Uri.parse('https://applimobilelol.yannick-comba.mds-angers.yt/champions/$name'));
     if (response.statusCode == 200) {
-      // Decode the JSON response as a list
       List<dynamic> jsonResponse = json.decode(response.body);
-      // Check if the list is not empty
-      if (jsonResponse.isNotEmpty) {
-        // Get the first item in the list and convert it to a Champion object
-        return Champion.fromJson(jsonResponse[0]);
-      } else {
-        throw Exception('No champion data available for $name');
-      }
+      // Filter spells for the specific champion
+      List<dynamic> spellsJson = jsonResponse.where((data) => data['champions_id'] == champion.id.toString()).toList();
+      // Convert spells to List<Spell>
+      List<Spell> spells = spellsJson.map((data) => Spell.fromJson(data)).toList();
+      // Assign spells to the champion
+      champion.spells = spells;
+      return champion;
     } else {
       throw Exception('Failed to load champion details for $name');
     }
   }
+
+
+
 
   // Fetch the list of all champions
   Future<List<Champion>> fetchChampions() async {

@@ -1,7 +1,6 @@
 class Spell {
   final int id;
-  final String name;    // Convertir `id` en int en vérifiant d'abord si c'est une chaîne
-
+  final String name;
   final String description;
   final String touch;
   final String iconPath;
@@ -16,16 +15,14 @@ class Spell {
     required this.championsId,
   });
 
-  // Spell model
   factory Spell.fromJson(Map<String, dynamic> json) {
     return Spell(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      description: json['description'] as String,
-      touch: json['touch'] as String,
-      iconPath: json['path_icon'] as String,
-      championsId: json['champions_id'] as int,
+      id: int.parse(json['id']),
+      name: json['name'] ?? "", // Gérer les valeurs nulles
+      description: json['description'] ?? "", // Gérer les valeurs nulles
+      touch: json['touch'] ?? "",
+      iconPath: json['path_icon'] ?? "",
+      championsId: int.parse(json['champions_id']),
     );
   }
-
 }
