@@ -27,7 +27,7 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
     // Récupérer la largeur de l'écran
     double screenWidth = MediaQuery.of(context).size.width;
     // Définir un padding commun
-    final EdgeInsets commonPadding = EdgeInsets.symmetric(horizontal: 16.0);
+    const EdgeInsets commonPadding = EdgeInsets.symmetric(horizontal: 16.0);
 
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +39,7 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
           children: <Widget>[
             Padding(
               padding: commonPadding,
-              child: Text("Name: ${widget.champion.name}", style: TextStyle(fontSize: 24)),
+              child: Text("Name: ${widget.champion.name}", style: const TextStyle(fontSize: 24)),
             ),
             const SizedBox(height: 10),
             // Text("Roles : ${widget.champion.roles}", style: const TextStyle(fontSize: 24)),
@@ -53,7 +53,7 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
             ),            const SizedBox(height: 10),
             Padding(
               padding: commonPadding,
-              child: Text("Description: ${widget.champion.description}", style: TextStyle(fontSize: 16)),
+              child: Text("Description: ${widget.champion.description}", style: const TextStyle(fontSize: 16)),
             ),            const SizedBox(height: 20),
             Padding(
               padding: commonPadding,
