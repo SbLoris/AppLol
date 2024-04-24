@@ -24,6 +24,7 @@ class _ChampionListScreenState extends State<ChampionListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Select a Champion'),
+        backgroundColor: Colors.black26, // Modern color for the AppBar
       ),
       body: Center(
         child: FutureBuilder<List<Champion>>(
@@ -38,16 +39,29 @@ class _ChampionListScreenState extends State<ChampionListScreen> {
             return ListView.builder(
               itemCount: champions.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(champions[index].name),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChampionDetailScreen(champion: champions[index]),
+                return Card(
+                  elevation: 5, // Adds shadow under each list item
+                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  child: ListTile(
+                    title: Text(champions[index].name, style: TextStyle(color: Colors.black)), // Stylish text
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(50), // Circular image
+                      child: Image.asset(
+                        'assets/${champions[index].iconPath}',
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
                       ),
-                    );
-                  },
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChampionDetailScreen(champion: champions[index]),
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             );
