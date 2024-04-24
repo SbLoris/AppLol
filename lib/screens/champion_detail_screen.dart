@@ -6,7 +6,7 @@ import '../models/spell.dart';
 class ChampionDetailScreen extends StatefulWidget {
   final Champion champion;
 
-  const ChampionDetailScreen({super.key, required this.champion});
+  const ChampionDetailScreen({Key? key, required this.champion}) : super(key: key);
 
   @override
   _ChampionDetailScreenState createState() => _ChampionDetailScreenState();
@@ -18,15 +18,14 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
   @override
   void initState() {
     super.initState();
-    futureSpells = ApiService().fetchChampionDetails(widget.champion.name, widget.champion)
+    futureSpells = ApiService()
+        .fetchChampionDetails(widget.champion.name, widget.champion)
         .then((champion) => champion.spells ?? []);
   }
 
   @override
   Widget build(BuildContext context) {
-    // Récupérer la largeur de l'écran
     double screenWidth = MediaQuery.of(context).size.width;
-    // Définir un padding commun
     const EdgeInsets commonPadding = EdgeInsets.symmetric(horizontal: 16.0);
 
     return Scaffold(
@@ -39,7 +38,10 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
           children: <Widget>[
             Padding(
               padding: commonPadding,
-              child: Text(widget.champion.name, style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold)),
+              child: Text(
+                widget.champion.name,
+                style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(height: 10),
             Image.asset(
@@ -47,20 +49,30 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
               width: screenWidth,
               fit: BoxFit.cover,
             ),
-            const SizedBox(height: 10,),
-            Padding(padding: commonPadding,
-            child: Text("Description", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),),
-
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Padding(
               padding: commonPadding,
-              child: Text("${widget.champion.description}", style: const TextStyle(fontSize: 16)),
+              child: Text(
+                "Description",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(height: 20),
-            const Divider(thickness: 2),  // Adds a visual divider
             Padding(
               padding: commonPadding,
-              child: Text("Capacités", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), // Section title for spells
+              child: Text(
+                "${widget.champion.description}",
+                style: const TextStyle(fontSize: 16),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Divider(thickness: 2),
+            Padding(
+              padding: commonPadding,
+              child: Text(
+                "Capacités",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(height: 10),
             Padding(
@@ -86,11 +98,25 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
           return Column(
             children: spells != null && spells.isNotEmpty
                 ? spells.map((spell) => ListTile(
-              leading: Image.asset('assets/${spell.iconPath}', width: 50),
+              leading: Image.asset('assets/${spell.iconPath}', width: 65),
               title: Text(spell.name),
-              subtitle: Text(spell.description),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "${spell.touch}",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(spell.description),
+                ],
+              ),
             )).toList()
-                : [const Text("Aucun sort disponible pour ce personnage", style: TextStyle(fontSize: 16))],
+                : [
+              const Text(
+                "Aucun sort disponible pour ce personnage",
+                style: TextStyle(fontSize: 16),
+              )
+            ],
           );
         }
       },
