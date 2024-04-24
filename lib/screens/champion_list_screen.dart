@@ -4,6 +4,8 @@ import '../models/champion.dart';
 import 'champion_detail_screen.dart';
 
 class ChampionListScreen extends StatefulWidget {
+  const ChampionListScreen({super.key});
+
   @override
   _ChampionListScreenState createState() => _ChampionListScreenState();
 }
@@ -21,14 +23,14 @@ class _ChampionListScreenState extends State<ChampionListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select a Champion'),
+        title: const Text('Select a Champion'),
       ),
       body: Center(
         child: FutureBuilder<List<Champion>>(
           future: futureChampions,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Text("Error: ${snapshot.error}");
             }
