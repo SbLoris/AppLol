@@ -34,22 +34,31 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
         title: Text(widget.champion.name),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("Nom : ${widget.champion.name}", style: const TextStyle(fontSize: 24)),
+            Padding(
+              padding: commonPadding,
+              child: Text("Name: ${widget.champion.name}", style: TextStyle(fontSize: 24)),
+            ),
             const SizedBox(height: 10),
             // Text("Roles : ${widget.champion.roles}", style: const TextStyle(fontSize: 24)),
             // const SizedBox(height: 10),
             // Text("Types : ${widget.champion.types}", style: const TextStyle(fontSize: 24)),
             // const SizedBox(height: 10),
-            Image.asset('assets/${widget.champion.iconPath}', width: 700, height: 250, fit: BoxFit.fill,),
-            const SizedBox(height: 10),
-            Text("Description: ${widget.champion.description}", style: const TextStyle(fontSize: 16)),
-            const SizedBox(height: 20),
-            const Text("Spells:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            buildSpellWidgets(),
+            Image.asset(
+              'assets/${widget.champion.iconPath}',
+              width: screenWidth, // Utiliser la largeur de l'écran
+              fit: BoxFit.cover, // Ajuster l'image pour remplir toute la largeur
+            ),            const SizedBox(height: 10),
+            Padding(
+              padding: commonPadding,
+              child: Text("Description: ${widget.champion.description}", style: TextStyle(fontSize: 16)),
+            ),            const SizedBox(height: 20),
+            Padding(
+              padding: commonPadding,
+              child: buildSpellWidgets(),
+            ),
           ],
         ),
       ),
