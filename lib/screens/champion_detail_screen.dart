@@ -24,23 +24,44 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Récupérer la largeur de l'écran
+    double screenWidth = MediaQuery.of(context).size.width;
+    // Définir un padding commun
+    final EdgeInsets commonPadding = EdgeInsets.symmetric(horizontal: 16.0);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.champion.name),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("Name: ${widget.champion.name}", style: TextStyle(fontSize: 24)),
+            Padding(
+              padding: commonPadding,
+              child: Text("${widget.champion.name}", style: TextStyle(fontSize: 24)),
+            ),
             SizedBox(height: 10),
-            Image.asset('assets/${widget.champion.iconPath}', width: 700, height: 250, fit: BoxFit.fill,),
+            // L'image n'a pas de padding pour utiliser toute la largeur de l'écran
+            Image.asset(
+              'assets/${widget.champion.iconPath}',
+              width: screenWidth, // Utiliser la largeur de l'écran
+              fit: BoxFit.cover, // Ajuster l'image pour remplir toute la largeur
+            ),
             SizedBox(height: 10),
-            Text("Description: ${widget.champion.description}", style: TextStyle(fontSize: 16)),
+            Padding(
+              padding: commonPadding,
+              child: Text("${widget.champion.description}", style: TextStyle(fontSize: 16)),
+            ),
             SizedBox(height: 20),
-            Text("Spells:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            buildSpellWidgets(),
+            Padding(
+              padding: commonPadding,
+              child: Text("Sorts :", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            ),
+            Padding(
+              padding: commonPadding,
+              child: buildSpellWidgets(),
+            ),
           ],
         ),
       ),
