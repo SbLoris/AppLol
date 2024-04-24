@@ -39,22 +39,30 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
           children: <Widget>[
             Padding(
               padding: commonPadding,
-              child: Text("Name: ${widget.champion.name}", style: const TextStyle(fontSize: 24)),
+              child: Text(widget.champion.name, style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold)),
             ),
             const SizedBox(height: 10),
-            // Text("Roles : ${widget.champion.roles}", style: const TextStyle(fontSize: 24)),
-            // const SizedBox(height: 10),
-            // Text("Types : ${widget.champion.types}", style: const TextStyle(fontSize: 24)),
-            // const SizedBox(height: 10),
             Image.asset(
               'assets/${widget.champion.iconPath}',
-              width: screenWidth, // Utiliser la largeur de l'écran
-              fit: BoxFit.cover, // Ajuster l'image pour remplir toute la largeur
-            ),            const SizedBox(height: 10),
+              width: screenWidth,
+              fit: BoxFit.cover,
+            ),
+            const SizedBox(height: 10,),
+            Padding(padding: commonPadding,
+            child: Text("Description", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),),
+
+            const SizedBox(height: 20),
             Padding(
               padding: commonPadding,
-              child: Text("Description: ${widget.champion.description}", style: const TextStyle(fontSize: 16)),
-            ),            const SizedBox(height: 20),
+              child: Text("${widget.champion.description}", style: const TextStyle(fontSize: 16)),
+            ),
+            const SizedBox(height: 20),
+            const Divider(thickness: 2),  // Adds a visual divider
+            Padding(
+              padding: commonPadding,
+              child: Text("Capacités", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), // Section title for spells
+            ),
+            const SizedBox(height: 10),
             Padding(
               padding: commonPadding,
               child: buildSpellWidgets(),
@@ -72,22 +80,20 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
-          return Text("Error: ${snapshot.error}");
+          return Text("Erreur: ${snapshot.error}");
         } else {
           List<Spell>? spells = snapshot.data;
           return Column(
             children: spells != null && spells.isNotEmpty
                 ? spells.map((spell) => ListTile(
-              leading: Image.asset('assets/${spell.iconPath}'),
-
+              leading: Image.asset('assets/${spell.iconPath}', width: 50),
               title: Text(spell.name),
               subtitle: Text(spell.description),
             )).toList()
-                : [const Text("No spells available for this champion.", style: TextStyle(fontSize: 16))],
+                : [const Text("Aucun sort disponible pour ce personnage", style: TextStyle(fontSize: 16))],
           );
         }
       },
     );
   }
-
 }
