@@ -6,7 +6,7 @@ import '../models/spell.dart';
 class ChampionDetailScreen extends StatefulWidget {
   final Champion champion;
 
-  const ChampionDetailScreen({Key? key, required this.champion}) : super(key: key);
+  const ChampionDetailScreen({super.key, required this.champion});
 
   @override
   _ChampionDetailScreenState createState() => _ChampionDetailScreenState();
@@ -18,14 +18,15 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
   @override
   void initState() {
     super.initState();
-    futureSpells = ApiService()
-        .fetchChampionDetails(widget.champion.name, widget.champion)
+    futureSpells = ApiService().fetchChampionDetails(widget.champion.name, widget.champion)
         .then((champion) => champion.spells ?? []);
   }
 
   @override
   Widget build(BuildContext context) {
+    // Récupérer la largeur de l'écran
     double screenWidth = MediaQuery.of(context).size.width;
+    // Définir un padding commun
     const EdgeInsets commonPadding = EdgeInsets.symmetric(horizontal: 16.0);
 
     return Scaffold(
