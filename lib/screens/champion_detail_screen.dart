@@ -63,7 +63,7 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
               padding: commonPadding,
               child: Text(
                 "${widget.champion.description}",
-                style: const TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16, fontStyle: FontStyle.italic ),
               ),
             ),
             const SizedBox(height: 20),
