@@ -3,6 +3,8 @@ import 'spell.dart';  // Importe la définition de la classe Spell
 class Champion {
   final int id;
   final String name;
+  // final String roles;
+  // final String types;
   final String description;
   final String iconPath;
   List<Spell>? spells;
@@ -10,6 +12,8 @@ class Champion {
   Champion({
     required this.id,
     required this.name,
+    // required this.roles,
+    // required this.types,
     required this.description,
     required this.iconPath,
     this.spells,
@@ -26,6 +30,8 @@ class Champion {
     return Champion(
       id: id,
       name: json['name'] as String,
+      // roles: json['roles'] as String,
+      // types: json['types'] as String,
       description: json['description'] as String,
       iconPath: json['path_icon'] as String,
       spells: spells,

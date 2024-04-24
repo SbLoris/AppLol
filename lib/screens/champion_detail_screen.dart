@@ -6,7 +6,7 @@ import '../models/spell.dart';
 class ChampionDetailScreen extends StatefulWidget {
   final Champion champion;
 
-  ChampionDetailScreen({required this.champion});
+  const ChampionDetailScreen({super.key, required this.champion});
 
   @override
   _ChampionDetailScreenState createState() => _ChampionDetailScreenState();
@@ -33,13 +33,17 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("Name: ${widget.champion.name}", style: TextStyle(fontSize: 24)),
-            SizedBox(height: 10),
+            Text("Nom : ${widget.champion.name}", style: const TextStyle(fontSize: 24)),
+            const SizedBox(height: 10),
+            // Text("Roles : ${widget.champion.roles}", style: const TextStyle(fontSize: 24)),
+            // const SizedBox(height: 10),
+            // Text("Types : ${widget.champion.types}", style: const TextStyle(fontSize: 24)),
+            // const SizedBox(height: 10),
             Image.asset('assets/${widget.champion.iconPath}', width: 700, height: 250, fit: BoxFit.fill,),
-            SizedBox(height: 10),
-            Text("Description: ${widget.champion.description}", style: TextStyle(fontSize: 16)),
-            SizedBox(height: 20),
-            Text("Spells:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
+            Text("Description: ${widget.champion.description}", style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 20),
+            const Text("Spells:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             buildSpellWidgets(),
           ],
         ),
@@ -52,7 +56,7 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
       future: futureSpells,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text("Error: ${snapshot.error}");
         } else {
@@ -65,7 +69,7 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
               title: Text(spell.name),
               subtitle: Text(spell.description),
             )).toList()
-                : [Text("No spells available for this champion.", style: TextStyle(fontSize: 16))],
+                : [const Text("No spells available for this champion.", style: TextStyle(fontSize: 16))],
           );
         }
       },
