@@ -48,17 +48,17 @@ class _ChampionDetailScreenState extends State<ChampionDetailScreen> {
               fit: BoxFit.cover,
             ),
             const SizedBox(height: 10,),
-            Padding(padding: commonPadding,
+            const Padding(padding: commonPadding,
             child: Text("Description", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),),
 
             const SizedBox(height: 20),
             Padding(
               padding: commonPadding,
-              child: Text("${widget.champion.description}", style: const TextStyle(fontSize: 16)),
+              child: Text(widget.champion.description, style: const TextStyle(fontSize: 16, fontStyle: FontStyle.italic)),
             ),
             const SizedBox(height: 20),
             const Divider(thickness: 2),  // Adds a visual divider
-            Padding(
+            const Padding(
               padding: commonPadding,
               child: Text("Capacités", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), // Section title for spells
             ),
